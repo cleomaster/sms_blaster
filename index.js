@@ -25,15 +25,15 @@ app.post("/postbulkmessages", (req, res) => {
 
   console.log(req.body.data.recieverPhoneNumbers[0]);
 
-  // for(let i = 0; i < req.body.data.recieverPhoneNumbers.length; i++) {
-  //   client.messages
-  //   .create({ 
-  //     body: req.body.data.message, 
-  //     from: req.body.data.selectedPhonenumber, 
-  //     to: req.body.data.recieverPhoneNumbers[i] 
-  //   })
-  //   .then(message => console.log(message.sid));
-  // }
+  for(let i = 0; i < req.body.data.recieverPhoneNumbers.length; i++) {
+    client.messages
+    .create({ 
+      body: req.body.data.message, 
+      from: req.body.data.selectedPhonenumber, 
+      to: req.body.data.recieverPhoneNumbers[i] 
+    })
+    .then(message => console.log(message.sid));
+  }
 })
 
 
