@@ -12,18 +12,32 @@ const client = require("twilio")(accountSid, authToken);
 
 
 app.post("/postsinglemessage", (req, res) => {
-  client.messages
-      .create({ 
-        body: req.body.data.message, 
-        from: req.body.data.selectedPhonenumber, 
-        to: req.body.data.recieverPhoneNumber 
-      })
-      .then(message => console.log(message.sid));
+
+
+  try {
+
+    client.messages
+    .create({ 
+      body: req.body.data.message, 
+      from: req.body.data.selectedPhonenumber, 
+      to: req.body.data.recieverPhoneNumber 
+    })
+    .then(message => console.log(message.sid));
+    
+
+  } catch (error) {
+    console.log(error);
+  }
+
 })
 
 app.post("/postbulkmessages", (req, res) => {
 
-  console.log(req.body.data.recieverPhoneNumbers[0]);
+
+  try {
+
+
+    console.log(req.body.data.recieverPhoneNumbers[0]);
 
   for(let i = 0; i < req.body.data.recieverPhoneNumbers.length; i++) {
     client.messages
@@ -34,34 +48,68 @@ app.post("/postbulkmessages", (req, res) => {
     })
     .then(message => console.log(message.sid));
   }
+
+    
+  } catch (error) {
+    
+
+    console.log(error);
+
+  }
+
 })
 
 
 app.get('/me', (req, res) => {
-  const myPhonenumbers = ["+0332434545"];
-  client.incomingPhoneNumbers
-  .list()
-  .then(phoneNumbers => {
-    phoneNumbers.forEach(phoneNumber => {
-      //console.log(phoneNumber.phoneNumber);
-      myPhonenumbers.push(phoneNumber.phoneNumber);
+
+
+  try {
+
+
+    const myPhonenumbers = [];
+    client.incomingPhoneNumbers
+    .list()
+    .then(phoneNumbers => {
+      phoneNumbers.forEach(phoneNumber => {
+        //console.log(phoneNumber.phoneNumber);
+        myPhonenumbers.push(phoneNumber.phoneNumber);
+      });
+      return res.send(myPhonenumbers);
+    })
+    .catch(error => {
+      console.log(`Error: ${error.message}`);
     });
-    return res.send(myPhonenumbers);
-  })
-  .catch(error => {
-    console.log(`Error: ${error.message}`);
-  });
+
+    
+  } catch (error) {
+    
+
+    console.log(error);
+
+  }
+
 
 })
 
 app.get('/balance', (req, res) => {
 
-  client.balance
-  .fetch()
-  .then(balance => {
-    res.send({ balance: balance.balance });
-    //console.log(`Current balance: ${balance.balance}`);
-  })
+
+  try {
+
+
+    client.balance
+    .fetch()
+    .then(balance => {
+      res.send({ balance: balance.balance });
+      //console.log(`Current balance: ${balance.balance}`);
+    })
+    
+
+
+  } catch (error) {
+    console.log(error);
+  }
+
 
 })
 
